@@ -1,56 +1,16 @@
 package interfaz;
 
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import es.ucm.fdi.isbc.viviendas.representacion.Coordenada;
-import es.ucm.fdi.isbc.viviendas.representacion.ExtrasBasicos;
-import es.ucm.fdi.isbc.viviendas.representacion.ExtrasFinca;
-import es.ucm.fdi.isbc.viviendas.representacion.ExtrasOtros;
-import es.ucm.fdi.isbc.viviendas.representacion.DescripcionVivienda.EstadoVivienda;
-import es.ucm.fdi.isbc.viviendas.representacion.DescripcionVivienda.TipoVivienda;
-
+@SuppressWarnings("serial")
 public class PanelPrincipal extends JPanel{
 	//Busqueda
 	
-	/*
-	 * Atributos de las viviendas para buscar:
-	 * TipoVivienda {Atico, Plantabaja, Piso, Loft, Casaadosada, CasaChalet, Duplex, Estudio, Fincarustica, Apartamento}
-	   EstadoVivienda { Muybien, Reformado, Areformar, Casinuevo, Bien};	
-		Integer superficie;
-		Integer habitaciones;
-		Integer banios;	
-		Coordenada coordenada;	
-		Integer precio;
-		ExtrasFinca extrasFinca;
-		ExtrasBasicos extrasBasicos;
-		ExtrasOtros extrasOtros;
-	 * **/
-		//private JCheckBox todos;
-		private JComboBox tipoV;
-		private JComboBox estadoV;
-		private JComboBox superficie;
-		private JComboBox habitaciones; 
-		private JComboBox banios;
-		private JCheckBox coordenada;
-		private JCheckBox precio;
-		private JCheckBox extrasFinca;
-		private JCheckBox extrasBasicos;
-		private JCheckBox extrasOtros;
-		
-		public PanelPrincipal(){
+	public PanelPrincipal(){
 			/*atributos ppales*/
 			this.setVisible(true);
 			this.setEnabled(true);
@@ -67,13 +27,8 @@ public class PanelPrincipal extends JPanel{
 		//elegir tipoV
 		private JPanel getPanelTipo(){
 			final JPanel  panel= new JPanel();
-			/*panelTipoV.setLayout(new BoxLayout(panelTipoV, BoxLayout.LINE_AXIS));
-			panelTipoV.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-			panelTipoV.add(Box.createRigidArea(new Dimension(10, 10)));
-			panelTipoV.setBackground(Color.WHITE);	
-*/
 			JLabel jLabel = new JLabel("Tipo: ");		
-			final JComboBox comboBox = new JComboBox() ; 
+			final JComboBox<String> comboBox = new JComboBox<String>() ; 
 			comboBox.addItem("Atico");
 			comboBox.addItem("Plantabaja");
 			comboBox.addItem("Piso");
@@ -121,13 +76,9 @@ public class PanelPrincipal extends JPanel{
 			
 		private JPanel getPanelSuperficie(){
 			final JPanel  panel= new JPanel();
-			/*panelTipoV.setLayout(new BoxLayout(panelTipoV, BoxLayout.LINE_AXIS));
-			panelTipoV.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-			panelTipoV.add(Box.createRigidArea(new Dimension(10, 10)));
-			panelTipoV.setBackground(Color.WHITE);	
-*/
+
 			JLabel jLabel = new JLabel("Superficie: ");		
-			final JComboBox comboBox = new JComboBox() ; 
+			final JComboBox<String> comboBox = new JComboBox<String>() ; 
 			comboBox.addItem("hasta 70 m2");
 			comboBox.addItem("70-100 m2");
 			comboBox.addItem("100-150 m2");
@@ -163,13 +114,8 @@ public class PanelPrincipal extends JPanel{
 		
 		private JPanel getPanelEstado(){
 			final JPanel  panel= new JPanel();
-			/*panelTipoV.setLayout(new BoxLayout(panelTipoV, BoxLayout.LINE_AXIS));
-			panelTipoV.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-			panelTipoV.add(Box.createRigidArea(new Dimension(10, 10)));
-			panelTipoV.setBackground(Color.WHITE);	
-*/
 			JLabel jLabel = new JLabel("Estado: ");		
-			final JComboBox comboBox = new JComboBox() ; 
+			final JComboBox<String> comboBox = new JComboBox<String>() ; 
 			comboBox.addItem("Muy Bien");
 			comboBox.addItem("Reformado");
 			comboBox.addItem("A reformar");
@@ -205,13 +151,8 @@ public class PanelPrincipal extends JPanel{
 		
 		private JPanel getPanelHabitaciones(){
 			final JPanel  panel= new JPanel();
-			/*panelTipoV.setLayout(new BoxLayout(panelTipoV, BoxLayout.LINE_AXIS));
-			panelTipoV.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-			panelTipoV.add(Box.createRigidArea(new Dimension(10, 10)));
-			panelTipoV.setBackground(Color.WHITE);	
-*/
 			JLabel jLabel = new JLabel("Habitaciones: ");		
-			final JComboBox comboBox = new JComboBox() ; 
+			final JComboBox<String> comboBox = new JComboBox<String>() ; 
 			comboBox.addItem("Estudio");
 			comboBox.addItem("1");
 			comboBox.addItem("2");
@@ -247,13 +188,8 @@ public class PanelPrincipal extends JPanel{
 		
 		private JPanel getPanelBanios(){
 			final JPanel  panel= new JPanel();
-			/*panelTipoV.setLayout(new BoxLayout(panelTipoV, BoxLayout.LINE_AXIS));
-			panelTipoV.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-			panelTipoV.add(Box.createRigidArea(new Dimension(10, 10)));
-			panelTipoV.setBackground(Color.WHITE);	
-*/
 			JLabel jLabel = new JLabel("Baños: ");		
-			final JComboBox comboBox = new JComboBox() ; 
+			final JComboBox<String> comboBox = new JComboBox<String>() ; 
 			comboBox.addItem("1");
 			comboBox.addItem("2");
 			comboBox.addItem("3 o más");

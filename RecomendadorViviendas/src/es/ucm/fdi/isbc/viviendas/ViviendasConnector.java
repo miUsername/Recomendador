@@ -1,5 +1,8 @@
 package es.ucm.fdi.isbc.viviendas;
 
+import interfaz.PanelPrincipal;
+import interfaz.VentanaPrimcipal;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.net.URL;
@@ -14,6 +17,9 @@ import es.ucm.fdi.isbc.viviendas.representacion.DescripcionVivienda;
 import es.ucm.fdi.isbc.viviendas.representacion.SolucionVivienda;
 
 public class ViviendasConnector implements Connector {
+	
+	public ArrayList<DescripcionVivienda> desV;
+	public ArrayList<SolucionVivienda> solV;
 
 	@Override
 	public void initFromXMLfile(URL file) throws InitializingException {
@@ -82,8 +88,9 @@ public class ViviendasConnector implements Connector {
 	public static void main(String[] args){
 		ViviendasConnector vc = new ViviendasConnector();
 		Collection<CBRCase> cases = vc.retrieveAllCases();
-		for(CBRCase c : cases)
-			System.out.println(c);
+		/*for(CBRCase c : cases)
+			System.out.println(c);*/
+		VentanaPrimcipal v = new VentanaPrimcipal();
 	}
 
 }
