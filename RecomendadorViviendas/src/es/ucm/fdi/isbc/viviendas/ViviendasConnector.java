@@ -10,11 +10,20 @@ import java.util.Collection;
 
 import Aplicacion.ViviendasRecommender;
 
+import jcolibri.cbraplications.StandardCBRApplication;
+import jcolibri.cbrcore.Attribute;
 import jcolibri.cbrcore.CBRCase;
 import jcolibri.cbrcore.CBRQuery;
 import jcolibri.cbrcore.CaseBaseFilter;
 import jcolibri.cbrcore.Connector;
 import jcolibri.exception.InitializingException;
+import jcolibri.method.retrieve.NNretrieval.similarity.global.Average;
+import jcolibri.method.retrieve.NNretrieval.similarity.local.Equal;
+import jcolibri.method.retrieve.NNretrieval.similarity.local.Table;
+import jcolibri.method.retrieve.NNretrieval.similarity.local.recommenders.InrecaLessIsBetter;
+import jcolibri.method.retrieve.NNretrieval.similarity.local.recommenders.McSherryMoreIsBetter;
+import jcolibri.test.recommenders.housesData.HouseDescription;
+import jcolibri.test.recommenders.rec1.Houses1;
 import es.ucm.fdi.isbc.viviendas.representacion.DescripcionVivienda;
 import es.ucm.fdi.isbc.viviendas.representacion.SolucionVivienda;
 
@@ -86,11 +95,11 @@ public class ViviendasConnector implements Connector {
 	 * @param args
 	 */
 	public static void main(String[] args){
-		ViviendasConnector vc = new ViviendasConnector();
+	/*	ViviendasConnector vc = new ViviendasConnector();
 		Collection<CBRCase> cases = vc.retrieveAllCases();
 		/*for(CBRCase c : cases)
 			System.out.println(c);*/
-		ViviendasRecommender viviendasRecommender = ViviendasRecommender.getInstance();
+/*		ViviendasRecommender viviendasRecommender = ViviendasRecommender.getInstance();
 		
 		try{
 		// Configure the application
@@ -100,9 +109,9 @@ public class ViviendasConnector implements Connector {
 		// Create  the frame that obtains the query
 		/*QueryDialog qf =	new	QueryDialog(main);//en el tutorial main es un frame
 		 */
-			VentanaPrimcipal v = new VentanaPrimcipal();//es en la q creamos el fromulario
+/*			VentanaPrimcipal v = new VentanaPrimcipal();//es en la q creamos el fromulario
 		// Main CBR cycle
-		boolean cont = true;
+/*		boolean cont = true;
 		while(cont){
 			// Show the query frame
 			//qf.setVisible(true);
@@ -124,6 +133,45 @@ public class ViviendasConnector implements Connector {
 		org.apache.commons.logging.LogFactory.getLog(ViviendasRecommender.class).error(e);
 		javax.swing.JOptionPane.showMessageDialog(null,e.getMessage());
 		}
+		
+		
+		*
+		 */ StandardCBRApplication recommender = new ViviendasRecommender();
+	try
+	{
+	    recommender.configure();
+	    
+	    recommender.preCycle();
+	    
+	    CBRQuery query = new CBRQuery();
+	    
+	    DescripcionVivienda hd = new DescripcionVivienda();
+	    
+	    /*n(new Average());
+		simConfig.addMapping(new Attribute("superficie", DescripcionVivienda.class), new Table("jcolibri/test/recommenders/housesData/area.csv"));
+		simConfig.addMapping(new Attribute("habitaciones", DescripcionVivienda.class), new McSherryMoreIsBetter(0,0));
+		simConfig.addMapping(new Attribute("precio", DescripcionVivienda.class), new InrecaLessIsBetter(2000, 0.5));
+		simConfig.addMapping(new Attribute("estado", DescripcionVivienda.class), new Equal());
+		simConfig.addMapping(new Attribute("localizacion", DescripcionVivienda.class), new Equal());
+		simConfig.addMapping(new Attribute("banios",*/
+	    hd.setSuperficie(50);
+	    hd.setBanios(1);
+	    hd.setHabitaciones(2);
+	    hd.setEstado(DescripcionVivienda.EstadoVivienda.Muybien);
+	    hd.setLocalizacion("centro");
+	    hd.setTipo(DescripcionVivienda.TipoVivienda.Apartamento);
+	    query.setDescription(hd);
+	    
+	    recommender.cycle(query);
+	    
+	    recommender.postCycle();
+	    
+	} catch (Exception e)
+	{
+	    org.apache.commons.logging.LogFactory.getLog(Houses1.class).error(e);
+	    
+	}
+		 
 		
 	}
 

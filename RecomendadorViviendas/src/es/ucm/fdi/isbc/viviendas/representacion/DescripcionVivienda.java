@@ -37,6 +37,11 @@ public class DescripcionVivienda implements CaseComponent{
 	ExtrasOtros extrasOtros;
 	
 	
+	public DescripcionVivienda()
+	{
+		super();
+	}
+	
 	public DescripcionVivienda(int id)
 	{
 		super();
