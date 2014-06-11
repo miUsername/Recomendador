@@ -175,7 +175,7 @@ public class ViviendasRecommender implements StandardCBRApplication{
 																			 // erroral mostrar en el siguiente método, no se muestran bien los atributos
 																			//supongo q habra q hacer otra tabla
 		// Display cases
-		UserChoice choice = DisplayCasesTableMethod.displayCasesInTableBasic(retrievedCases);//DisplayCasesMethod.displayCases(retrievedCases);
+		UserChoice choice = DisplayCasesTableMethod.displayCasesInTableSelectCase(retrievedCases);//DisplayCasesMethod.displayCases(retrievedCases);
 
 		// Buy or Quit
 		if(BuyOrQuit.buyOrQuit(choice))
