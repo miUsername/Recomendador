@@ -1,5 +1,7 @@
 package interfaz;
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 
 public class VentanaPrimcipal extends JFrame{

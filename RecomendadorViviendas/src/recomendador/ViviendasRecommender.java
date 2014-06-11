@@ -1,16 +1,9 @@
-package Aplicacion;
+package recomendador;
 
 import java.util.Collection;
 
 import es.ucm.fdi.isbc.viviendas.ViviendasConnector;
-import es.ucm.fdi.isbc.viviendas.representacion.Coordenada;
 import es.ucm.fdi.isbc.viviendas.representacion.DescripcionVivienda;
-import es.ucm.fdi.isbc.viviendas.representacion.ExtrasBasicos;
-import es.ucm.fdi.isbc.viviendas.representacion.ExtrasFinca;
-import es.ucm.fdi.isbc.viviendas.representacion.ExtrasOtros;
-import es.ucm.fdi.isbc.viviendas.representacion.DescripcionVivienda.EstadoVivienda;
-import es.ucm.fdi.isbc.viviendas.representacion.DescripcionVivienda.TipoVivienda;
-import jcolibri.casebase.IDIndexedLinealCaseBase;
 import jcolibri.casebase.LinealCaseBase;
 import jcolibri.cbraplications.StandardCBRApplication;
 import jcolibri.cbrcore.Attribute;
@@ -18,22 +11,15 @@ import jcolibri.cbrcore.CBRCase;
 import jcolibri.cbrcore.CBRCaseBase;
 import jcolibri.cbrcore.CBRQuery;
 import jcolibri.cbrcore.Connector;
-import jcolibri.connector.PlainTextConnector;
 import jcolibri.exception.ExecutionException;
 import jcolibri.extensions.recommendation.casesDisplay.DisplayCasesTableMethod;
 import jcolibri.extensions.recommendation.casesDisplay.UserChoice;
 import jcolibri.extensions.recommendation.conditionals.BuyOrQuit;
-import jcolibri.method.gui.formFilling.ObtainQueryWithFormMethod;
 import jcolibri.method.retrieve.RetrievalResult;
 import jcolibri.method.retrieve.NNretrieval.NNConfig;
 import jcolibri.method.retrieve.NNretrieval.NNScoringMethod;
 import jcolibri.method.retrieve.NNretrieval.similarity.global.Average;
-import jcolibri.method.retrieve.NNretrieval.similarity.local.Equal;
-import jcolibri.method.retrieve.NNretrieval.similarity.local.Table;
-import jcolibri.method.retrieve.NNretrieval.similarity.local.recommenders.InrecaLessIsBetter;
-import jcolibri.method.retrieve.NNretrieval.similarity.local.recommenders.McSherryMoreIsBetter;
 import jcolibri.method.retrieve.selection.SelectCases;
-import jcolibri.test.recommenders.housesData.HouseDescription;
 
 public class ViviendasRecommender implements StandardCBRApplication{
 	
@@ -42,6 +28,7 @@ public class ViviendasRecommender implements StandardCBRApplication{
 	
 	/** KNN config */ //siguiendo el ejemplo de recomendaores
     NNConfig simConfig;
+    
 	
 	/*hacemos singleton segun el manual*/
 	private static	ViviendasRecommender _instance=null;
@@ -71,7 +58,7 @@ public class ViviendasRecommender implements StandardCBRApplication{
 		
 		simConfig = new NNConfig();
 		// Set the average() global similarity function for the description of the case
-		/*estos son todos los atributos de las casas: los añado segun el ejemplo, los que no añado los dejo comentados
+		/*estos son todos los atributos de las casas:
 		 
 		simConfig.setDescriptionSimFunction(new Average());
 		simConfig.addMapping(new Attribute("superficie", DescripcionVivienda.class), new Table("jcolibri/test/recommenders/housesData/area.csv"));
@@ -96,71 +83,50 @@ public class ViviendasRecommender implements StandardCBRApplication{
 
 
 		simConfig.setDescriptionSimFunction(new Average());
+
 		
-		/*SIMILARITY.LOCAL
- * Equal(): This function returns 1 if both individuals are equal, otherwise returns 0
- * EnumCyclicDistance(): This function computes the similarity between two enum values as their cyclic distance.
- * EnumDistance(): This function returns the similarity of two enum values as the their distance sim(x,y)=|ord(x) - ord(y)|
- * EqualsStringIgnoreCase(): This function returns 1 if both String are the same despite case letters, 0 in the other case
- * Interval():  This function returns the similarity of two number inside an interval sim(x,y)=1-(|x-y|/interval)
- * MaxString(): This function returns a similarity value depending of the biggest substring that belong to both strings.
- * Table(): Similarity function that uses a table to obtain the similarity between two values. 
- * 			Allowed values are Strings or Enums. 
- * 			The table is read from a text file with the following format:
-				 * <ul>
-				 * <li>1st line: coma separated n categories
-				 * <li>following n lines: n double values separated by comma. 
-				 * </ul> 
-	Threshold(): This function returns 1 if the difference between two numbers is less than a threshold, 0 in the other case.
-	SIMILARITY.LOCAL.RECOMMENDER
-	InrecaLessIsBetter(): This function returns the similarity of two numbers (or enums) following the INRECA - Less is Better formula
- *							sim(c.a,q.a)= if(c.a < q.a) then 1 else  jump (max(a) - c.a) / (max(a) - q.a)
- * 							jump and max(a) must be defined by the designer.
- * InrecaMoreIsBetter():This function returns the similarity of two numbers (or Enums) following the INRECA - More is Better formulae
- * 							sim(c.a,q.a)= if(c.a > q.a) then 1 else  jump * (1- (q.a - c.a) / q.a))
- * 							jump must be defined by the designer.
- * McSherryLessIsBetter():This function returns the similarity of two numbers following the McSherry - Less is Better formulae
- * 							sim(c.a,q.a)= (max(a) - c.a) / (max(a)-min(a))
- * 							min(a) and max(a) must be defined by the designer. q.a is not taken into account.
- * McSherryMoreIsBetter(): This function returns the similarity of two numbers following  the McSherry - More is Better formulae
-							 sim(c.a,q.a)= 1 - ((max(a) - c.a) / (max(a)-min(a)))
-							 min(a) and max(a) must be defined by the designer. q.a is not taken into account.
- */
-		
-		simConfig.addMapping(habitaciones, new Equal());
-		simConfig.addMapping(precio, new Equal());
-		simConfig.addMapping(estado, new Equal());
-		simConfig.addMapping(localizacion, new Equal());
-		simConfig.addMapping(banios, new Equal());
-		simConfig.addMapping(id, new Equal());
-		simConfig.addMapping(titulo, new Equal());
-		simConfig.addMapping(urlFoto, new Equal());
-		simConfig.addMapping(url, new Equal());
-		simConfig.addMapping(descripcion, new Equal());
-		simConfig.addMapping(extrasOtros, new Equal());
-		simConfig.addMapping(extrasBasicos, new Equal());
-		simConfig.addMapping(extrasFinca, new Equal());
-		simConfig.addMapping(precioZona, new Equal());
-		simConfig.addMapping(precioMedio, new Equal());
-		simConfig.addMapping(coordenada, new Equal());
+		simConfig.addMapping(habitaciones, new Similitud("habitaciones"));
+		simConfig.addMapping(precio, new Similitud("precio"));
+		simConfig.addMapping(estado, new Similitud("estado"));
+		simConfig.addMapping(banios,new Similitud("banios"));
+		simConfig.addMapping(id, new Similitud("id"));
+		simConfig.addMapping(url, new Similitud("url"));
+		simConfig.addMapping(urlFoto, new Similitud("urlFoto"));
+		simConfig.addMapping(descripcion, new Similitud("descripcion"));
+		simConfig.addMapping(titulo, new Similitud("titulo"));
+		simConfig.addMapping(localizacion,new Similitud("localizacion"));
+		simConfig.addMapping(precioZona, new Similitud("precioZona"));
+		simConfig.addMapping(precioMedio, new Similitud("precioMedio"));
+		simConfig.addMapping(coordenada,new Similitud("coordenada"));
+		/*
+			simConfig.addMapping(extrasOtros, new Similitud("extrasOtros"));
+		simConfig.addMapping(extrasBasicos, new Similitud("extrasBasicos"));
+		simConfig.addMapping(extrasFinca, new Similitud("extrasFinca"));
+*/
 		
 		
 		simConfig.setWeight(habitaciones, 1.0);
 		simConfig.setWeight(precio, 1.0);
 		simConfig.setWeight(estado, 1.0);
-		simConfig.setWeight(localizacion, 1.0);
 		simConfig.setWeight(banios, 1.0);
-		simConfig.setWeight(id, 1.0);
-		simConfig.setWeight(titulo, 1.0);
+		simConfig.setWeight(id, 0.0);
 		simConfig.setWeight(urlFoto, 1.0);
+		simConfig.setWeight(titulo, 1.0);
 		simConfig.setWeight(url, 1.0);
 		simConfig.setWeight(descripcion, 1.0);
-		simConfig.setWeight(extrasOtros, 1.0);
-		simConfig.setWeight(extrasBasicos, 1.0);
-		simConfig.setWeight(extrasFinca, 1.0);
+		simConfig.setWeight(localizacion, 1.0);
 		simConfig.setWeight(precioZona, 1.0);
 		simConfig.setWeight(precioMedio, 1.0);
-		simConfig.setWeight(coordenada, 1.0);
+		simConfig.setWeight(titulo, 1.0);
+		/*	
+		
+
+		//simConfig.setWeight(extrasOtros, 1.0);
+		//simConfig.setWeight(extrasBasicos, 1.0);
+		//simConfig.setWeight(extrasFinca, 1.0);
+
+		//simConfig.setWeight(coordenada, 1.0);*/
+		
 		
 	}
 	/*
@@ -187,25 +153,23 @@ public class ViviendasRecommender implements StandardCBRApplication{
 	public void cycle(CBRQuery query) throws ExecutionException {
 		/*ciclo del ejemplo del recomendador
 
-		// Select cases
-		Collection<CBRCase> retrievedCases = SelectCases.selectTopK(eval, 54);
-
 		for(CBRCase c: retrievedCases){
 			resultBusqueda.add((AnimalDescription) c.getDescription());
 		}
 */
 		// Obtain query
 //		ObtainQueryWithFormMethod.obtainQueryWithInitialValues(query,null,null);
+		//llamamos a nuestra interfaz
+		//VentanaPrimcipal v = new VentanaPrimcipal();
+		
 		
 		// Execute KNN
 		Collection<RetrievalResult> eval = NNScoringMethod.evaluateSimilarity(_caseBase.getCases(), query, simConfig);
 		
 		// Select cases
-		Collection<CBRCase> retrievedCases = SelectCases.selectTopK(eval, 5);//el numero q ponemos ahi da error-> error 0..4  Error getting value from object
-																			 // erroral mostrar en el siguiente método, no se muestran bien los atributos
-																			//supongo q habra q hacer otra tabla
+		Collection<CBRCase> retrievedCases = SelectCases.selectTopK(eval, 20);//5=numero de casos iniciales que se muestran al usuario
 		// Display cases
-		UserChoice choice = DisplayCasesTableMethod.displayCasesInTableSelectCase(retrievedCases);//DisplayCasesMethod.displayCases(retrievedCases);
+		UserChoice choice = DisplayCasesTableMethod.displayCasesInTableSelectCase(retrievedCases);//Method.displayCases(retrievedCases);
 
 		// Buy or Quit
 		if(BuyOrQuit.buyOrQuit(choice))

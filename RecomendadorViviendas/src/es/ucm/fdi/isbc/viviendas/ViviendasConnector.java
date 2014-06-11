@@ -7,8 +7,10 @@ import java.io.FileReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
-import Aplicacion.ViviendasRecommender;
+import recomendador.ViviendasRecommender;
+
 
 import jcolibri.cbraplications.StandardCBRApplication;
 import jcolibri.cbrcore.Attribute;
@@ -136,41 +138,12 @@ public class ViviendasConnector implements Connector {
 		
 		
 		*
-		 */ StandardCBRApplication recommender = new ViviendasRecommender();
-	try
-	{
-	    recommender.configure();
-	    
-	    recommender.preCycle();
-	    
-	    CBRQuery query = new CBRQuery();
-	    
-	    DescripcionVivienda hd = new DescripcionVivienda();
-	    
-	    /*n(new Average());
-		simConfig.addMapping(new Attribute("superficie", DescripcionVivienda.class), new Table("jcolibri/test/recommenders/housesData/area.csv"));
-		simConfig.addMapping(new Attribute("habitaciones", DescripcionVivienda.class), new McSherryMoreIsBetter(0,0));
-		simConfig.addMapping(new Attribute("precio", DescripcionVivienda.class), new InrecaLessIsBetter(2000, 0.5));
-		simConfig.addMapping(new Attribute("estado", DescripcionVivienda.class), new Equal());
-		simConfig.addMapping(new Attribute("localizacion", DescripcionVivienda.class), new Equal());
-		simConfig.addMapping(new Attribute("banios",*/
-	    hd.setSuperficie(50);
-	    hd.setBanios(1);
-	    hd.setHabitaciones(2);
-	    hd.setEstado(DescripcionVivienda.EstadoVivienda.Muybien);
-	    hd.setLocalizacion("centro");
-	    hd.setTipo(DescripcionVivienda.TipoVivienda.Apartamento);
-	    query.setDescription(hd);
-	    
-	    recommender.cycle(query);
-	    
-	    recommender.postCycle();
-	    
-	} catch (Exception e)
-	{
-	    org.apache.commons.logging.LogFactory.getLog(Houses1.class).error(e);
-	    
-	}
+		 */ 
+		
+		
+		//llamamos a la interfaz para obtener los valores iniciales
+				VentanaPrimcipal v = new VentanaPrimcipal();
+	
 		 
 		
 	}
