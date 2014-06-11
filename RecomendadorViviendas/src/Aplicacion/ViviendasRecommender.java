@@ -95,7 +95,37 @@ public class ViviendasRecommender implements StandardCBRApplication{
 		Attribute coordenada = new Attribute("coordenada", DescripcionVivienda.class);
 
 
-		simConfig.setDescriptionSimFunction(new Average());// no se si hace falta, estaba en el ejemplo
+		simConfig.setDescriptionSimFunction(new Average());
+		
+		/*SIMILARITY.LOCAL
+ * Equal(): This function returns 1 if both individuals are equal, otherwise returns 0
+ * EnumCyclicDistance(): This function computes the similarity between two enum values as their cyclic distance.
+ * EnumDistance(): This function returns the similarity of two enum values as the their distance sim(x,y)=|ord(x) - ord(y)|
+ * EqualsStringIgnoreCase(): This function returns 1 if both String are the same despite case letters, 0 in the other case
+ * Interval():  This function returns the similarity of two number inside an interval sim(x,y)=1-(|x-y|/interval)
+ * MaxString(): This function returns a similarity value depending of the biggest substring that belong to both strings.
+ * Table(): Similarity function that uses a table to obtain the similarity between two values. 
+ * 			Allowed values are Strings or Enums. 
+ * 			The table is read from a text file with the following format:
+				 * <ul>
+				 * <li>1st line: coma separated n categories
+				 * <li>following n lines: n double values separated by comma. 
+				 * </ul> 
+	Threshold(): This function returns 1 if the difference between two numbers is less than a threshold, 0 in the other case.
+	SIMILARITY.LOCAL.RECOMMENDER
+	InrecaLessIsBetter(): This function returns the similarity of two numbers (or enums) following the INRECA - Less is Better formula
+ *							sim(c.a,q.a)= if(c.a < q.a) then 1 else  jump (max(a) - c.a) / (max(a) - q.a)
+ * 							jump and max(a) must be defined by the designer.
+ * InrecaMoreIsBetter():This function returns the similarity of two numbers (or Enums) following the INRECA - More is Better formulae
+ * 							sim(c.a,q.a)= if(c.a > q.a) then 1 else  jump * (1- (q.a - c.a) / q.a))
+ * 							jump must be defined by the designer.
+ * McSherryLessIsBetter():This function returns the similarity of two numbers following the McSherry - Less is Better formulae
+ * 							sim(c.a,q.a)= (max(a) - c.a) / (max(a)-min(a))
+ * 							min(a) and max(a) must be defined by the designer. q.a is not taken into account.
+ * McSherryMoreIsBetter(): This function returns the similarity of two numbers following  the McSherry - More is Better formulae
+							 sim(c.a,q.a)= 1 - ((max(a) - c.a) / (max(a)-min(a)))
+							 min(a) and max(a) must be defined by the designer. q.a is not taken into account.
+ */
 		
 		simConfig.addMapping(habitaciones, new Equal());
 		simConfig.addMapping(precio, new Equal());
